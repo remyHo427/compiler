@@ -160,11 +160,11 @@ const scan = (str: string) => {
         switch (c) {
             case 'a':
                 check("await", TOKEN_TYPE.AWAIT);
-                next();
+                identifier();
                 break;
             case 'b':
                 check("break", TOKEN_TYPE.BREAK);
-                next();
+                identifier();
                 break;
             case 'c':
                 check("case", TOKEN_TYPE.CASE);
@@ -172,15 +172,83 @@ const scan = (str: string) => {
                 check("class", TOKEN_TYPE.CLASS);
                 check("const", TOKEN_TYPE.CONST);
                 check("continue", TOKEN_TYPE.CONTINUE);
-                next();
+                identifier();
                 break;
             case 'd':
                 check("do", TOKEN_TYPE.DO);
                 check("delete", TOKEN_TYPE.DELETE);
                 check("default", TOKEN_TYPE.DEFAULT);
                 check("debugger", TOKEN_TYPE.DEBUGGER);
-                next();
+                identifier();
                 break;
+            case 'e':
+                check("else", TOKEN_TYPE.ELSE);
+                check("enum", TOKEN_TYPE.ENUM);
+                check("export", TOKEN_TYPE.EXPORT);
+                check("extends", TOKEN_TYPE.EXTENDS);
+                identifier();
+                break;
+            case 'f':
+                check("for", TOKEN_TYPE.FOR);
+                check("finally", TOKEN_TYPE.FINALLY);
+                check("function", TOKEN_TYPE.FUNCTION);
+                identifier();
+                break;
+            case 'i':
+                check("if", TOKEN_TYPE.IF);
+                check("in", TOKEN_TYPE.IN);
+                check("import", TOKEN_TYPE.IMPORT);
+                check("instanceof", TOKEN_TYPE.INSTANCEOF);
+                identifier();
+                break;
+            case 'n':
+                check("new", TOKEN_TYPE.NEW);
+                check("null", TOKEN_TYPE.NULL);
+                identifier();
+                break;
+            case 'r':
+                check("return", TOKEN_TYPE.RETURN);
+                identifier();
+                break;
+            case 's':
+                check("super", TOKEN_TYPE.NULL);
+                check("switch", TOKEN_TYPE.SWITCH);
+                identifier();
+                break;
+            case 't':
+                check("try", TOKEN_TYPE.TRY);
+                check("true", TOKEN_TYPE.TRUE);
+                check("this", TOKEN_TYPE.THIS);
+                check("throw", TOKEN_TYPE.THROW);
+                check("typeof", TOKEN_TYPE.TYPEOF);
+                identifier();
+                break;
+            case 'v':
+                check("var", TOKEN_TYPE.VAR);
+                check("void", TOKEN_TYPE.VOID);
+                identifier();
+                break;
+            case 'w':
+                check("with", TOKEN_TYPE.WITH);
+                check("while", TOKEN_TYPE.WHILE);
+                identifier();
+                break;
+            case 'y':
+                check("yield", TOKEN_TYPE.YIELD);
+                identifier();
+                break;
+            case '_':
+                identifier();
+                break;
+            case '$':
+                identifier();
+                break;
+            default:
+                if (isalpha(c) && !skip) {
+                    // TOKEN_TYPE doesn't work, possibly
+                    // broken for upper case identifiers
+                    identifier();
+                }
         }
         
         next();
@@ -189,9 +257,9 @@ const scan = (str: string) => {
     return toks;
 }
 
-const make_token = (type: TOKEN_TYPE) => {
+const make_token = (type: TOKEN_TYPE, id = "") => {
     if (!skip) {
-        toks[tok_count++] = { type };
+        toks[tok_count++] = { type, id };
         skip = true;
     }
 }
@@ -212,9 +280,30 @@ const check = (comp_str: string, type: TOKEN_TYPE) => {
     }
 }
 
+const identifier = () => {
+    let c: string;
+    let str = "";
+    
+    while (1) {
+        c = peek();
+        if (c == '_' || c == '$' || isnumber(c) || isalpha(c)) {
+            str += c;
+            next();
+        } else {
+            break;
+        }
+    }
+
+    make_token(TOKEN_TYPE.IDENTIFIER, str);
+}
+
 const peek = () => prg[char_index];
 const peek_next = () => prg[char_index + 1];
 const next = () => char_index++;
 const advance_by = (i: number) => char_index += i;
+
+// only tested for UTF-8
+const isalpha = (c: string) => (c <= 'A' && c >= 'Z') || (c >= 'a' && c <= 'z');
+const isnumber = (c: string) => (c >= '0') && (c <= '9');
 
 export default scan;

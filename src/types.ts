@@ -92,7 +92,10 @@ export enum TOKEN_TYPE {
     WHILE,
     WITH,
     YIELD,
+
+    IDENTIFIER,
 };
 export interface TOKEN {
     type: TOKEN_TYPE;
+    id: string;
 };
