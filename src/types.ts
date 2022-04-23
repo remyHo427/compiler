@@ -10,29 +10,29 @@ export enum TOKEN_TYPE {
     THREE_DOTS,
     SEMICOLON,
     COMMA,
-    L_ANGLE, //
-    R_ANGLE, //
-    LESS_THAN_OR_EQ, //
-    GREATER_THAN_OR_EQ, //
-    EQUAL, //
-    NOT_EQ, //
+    L_ANGLE,
+    R_ANGLE,
+    LESS_THAN_OR_EQ,
+    GREATER_THAN_OR_EQ,
+    EQUAL,
+    NOT_EQ,
     PLUS,
     MINUS,
-    MULTIPLY, //
+    MULTIPLY,
     DIVIDE,
     REMAINDER,
-    POWER, //
-    INCREMENT, //
-    DECREMENT, //
-    L_SHIFT, //
-    R_SHIFT, //
-    U_SHIFT, //
-    BITWISE_AND, // 
-    BITWISE_OR, //
-    BITWISE_XOR, //
-    NOT, //
-    BITWISE_NOT, //
-    AND, //
+    POWER,
+    INCREMENT,
+    DECREMENT,
+    L_SHIFT,
+    R_SHIFT,
+    U_SHIFT,
+    BITWISE_AND, 
+    BITWISE_OR,
+    BITWISE_XOR,
+    NOT,
+    BITWISE_NOT,
+    AND,
     OR,
     QUESTION,
     COLON,
@@ -49,7 +49,6 @@ export enum TOKEN_TYPE {
     BITWISE_AND_ASSIGN,
     BITWISE_OR_ASSIGN,
     BITWISE_XOR_ASSIGN,
-    BITWISE_NOT_ASSIGN,
     AND_ASSIGN,
     OR_ASSIGN,
     ARROW,
