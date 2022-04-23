@@ -29,15 +29,15 @@ const scan = (str: string) => {
                     while (peek() != '\n') {
                         next();
                     }
-                }
-                if (peek_next() == '*') {
+                    continue;
+                } else if (peek_next() == '*') {
                     advance_by(2);
                     while (peek() != '*' || peek_next() != '\/') {
                         next();
                     }
                     advance_by(2);
+                    continue;
                 }
-                break;
             case ' ':
                 while (peek_next() == ' ')
                     next();
@@ -301,14 +301,15 @@ const make_token = (type: TOKEN_TYPE, id = "") => {
 const check = (comp_str: string, type: TOKEN_TYPE) => {
     let k = 0;
     let j = char_index;
+    let len = comp_str.length;
 
+    // broken, examples like "exports" should be identifiers, not keywords
     while (comp_str[k] == prg[j]) {
-        comp_str[k] == prg[j];
         k++;
         j++;
     }
 
-    if (k == comp_str.length) {
+    if (k == len) {
         make_token(type);
         advance_by(k);
     }
