@@ -23,6 +23,21 @@ const scan = (str: string) => {
             case '\n':
                 next();
                 continue;
+            case '\/':
+                if (peek_next() == '\/') {
+                    advance_by(2);
+                    while (peek() != '\n') {
+                        next();
+                    }
+                }
+                if (peek_next() == '*') {
+                    advance_by(2);
+                    while (peek() != '*' || peek_next() != '\/') {
+                        next();
+                    }
+                    advance_by(2);
+                }
+                break;
             case ' ':
                 while (peek_next() == ' ')
                     next();
@@ -159,6 +174,8 @@ const scan = (str: string) => {
 
         switch (c) {
             case 'a':
+                check("as", TOKEN_TYPE.AS);
+                check("async", TOKEN_TYPE.ASYNC);
                 check("await", TOKEN_TYPE.AWAIT);
                 identifier();
                 break;
@@ -190,8 +207,13 @@ const scan = (str: string) => {
                 break;
             case 'f':
                 check("for", TOKEN_TYPE.FOR);
+                check("from", TOKEN_TYPE.FROM);
                 check("finally", TOKEN_TYPE.FINALLY);
                 check("function", TOKEN_TYPE.FUNCTION);
+                identifier();
+                break;
+            case 'g':
+                check("get", TOKEN_TYPE.GET);
                 identifier();
                 break;
             case 'i':
@@ -201,9 +223,17 @@ const scan = (str: string) => {
                 check("instanceof", TOKEN_TYPE.INSTANCEOF);
                 identifier();
                 break;
+            case 'l':
+                check("let", TOKEN_TYPE.LET);
+                identifier();
+                break;
             case 'n':
                 check("new", TOKEN_TYPE.NEW);
                 check("null", TOKEN_TYPE.NULL);
+                identifier();
+                break;
+            case 'o':
+                check("of", TOKEN_TYPE.OF);
                 identifier();
                 break;
             case 'r':
@@ -211,6 +241,7 @@ const scan = (str: string) => {
                 identifier();
                 break;
             case 's':
+                check("set", TOKEN_TYPE.SET);
                 check("super", TOKEN_TYPE.NULL);
                 check("switch", TOKEN_TYPE.SWITCH);
                 identifier();
@@ -220,6 +251,7 @@ const scan = (str: string) => {
                 check("true", TOKEN_TYPE.TRUE);
                 check("this", TOKEN_TYPE.THIS);
                 check("throw", TOKEN_TYPE.THROW);
+                check("target", TOKEN_TYPE.TARGET);
                 check("typeof", TOKEN_TYPE.TYPEOF);
                 identifier();
                 break;
@@ -244,13 +276,15 @@ const scan = (str: string) => {
                 identifier();
                 break;
             default:
-                if (isalpha(c) && !skip) {
-                    // TOKEN_TYPE doesn't work, possibly
-                    // broken for upper case identifiers
+                if (!skip && isalpha(c)) {
                     identifier();
                 }
         }
-        
+
+        if (skip) {
+            continue;
+        }
+
         next();
     }
 
@@ -303,7 +337,7 @@ const next = () => char_index++;
 const advance_by = (i: number) => char_index += i;
 
 // only tested for UTF-8
-const isalpha = (c: string) => (c <= 'A' && c >= 'Z') || (c >= 'a' && c <= 'z');
+const isalpha = (c: string) => (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 const isnumber = (c: string) => (c >= '0') && (c <= '9');
 
 export default scan;

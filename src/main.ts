@@ -1,14 +1,17 @@
-import fs from "fs";
+import fs, { unwatchFile } from "fs";
 import scan from "./scanner";
 
 fs.readFile("./test/test.js", "utf-8", (err, data) => {
     let toks = scan(data), len = toks.length;
     let type;
     let str = "";
+    
     for (let i = 0; i < len; i++) {
-        console.log(((type = types[toks[i].type]) == "IDENTIFIER") 
-            ? `IDENTIFIER (${toks[i].id})` : type);
+        str += (((type = types[toks[i].type]) == "IDENTIFIER") 
+        ? `IDENTIFIER (${toks[i].id})` : type) + "\n";
     }
+
+    fs.writeFile("./out/emit.txt", str, err => console.log(err));
 });
 
 const types = [
@@ -102,5 +105,20 @@ const types = [
     "WHILE",
     "WITH",
     "YIELD",
-    "IDENTIFIER"
+    "LET",
+    "STATIC",
+    "IMPLEMENT",
+    "INTERFACE",
+    "PACKAGE",
+    "PRIVATE",
+    "PROTECTED",
+    "PUBLIC",
+    "AS",
+    "ASYNC",
+    "FROM",
+    "GET",
+    "OF",
+    "SET",
+    "TARGET",
+    "IDENTIFIER",
 ];

@@ -92,7 +92,21 @@ export enum TOKEN_TYPE {
     WHILE,
     WITH,
     YIELD,
-
+    LET,
+    STATIC,
+    IMPLEMENT,
+    INTERFACE,
+    PACKAGE,
+    PRIVATE,
+    PROTECTED,
+    PUBLIC,
+    AS,
+    ASYNC,
+    FROM,
+    GET,
+    OF,
+    SET,
+    TARGET,
     IDENTIFIER,
 };
 export interface TOKEN {
