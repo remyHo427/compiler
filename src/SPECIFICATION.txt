@@ -1,0 +1,69 @@
+\\ this is a comment, it starts with double slash and ends with newline
+
+\\ literals 
+1       \\ integer literal
+-1      \\ negative integer
+1.0     \\ float literal
+-1.0    \\ negative float
+0       \\ double as false
+1       \\ double as true
+"this is a string"
+[1, 2, 3]   \\ arrays
+{ one: 1, two: 2, three: 3 } \\ objects
+
+\\ reserved words
+\\ if, else, while, switch, case, break, continue, function, return, let
+
+\\ control structures
+if () { } else { }
+if () { } else if () { } 
+switch() { case 1: break; default: break; }
+while() { continue; }
+
+\\ operators
+\\ used symbols == != = < > <= >= & | + - * / % ! ;
+2 == 1;     \\ EQUAL
+2 != 1;     \\ NOT EQUAL
+2 = 1;      \\ ASSIGN
+2 < 1;      \\ LESS THAN
+2 > 1;      \\ GREATER THAN
+2 <= 1;     \\ LESS THAN OR EQUAL
+2 >= 1;     \\ GREATER THAN OR EQUAL
+1 & 0;      \\ AND
+1 | 0;      \\ OR
+!0;         \\ NOT
+array[1]    \\ access array/objects
+
+\\ syntax
+\\ replace LHS with one of RHS productions
+\\ ? means optional, can be replaced with empty string.
+\\ | means or, a | b means one of the two, a or b.
+\\ !a means "no a"
+\\ a* means "zero or more a"
+\\ a+ means "one or more a"
+\\ a-z means "a to z", A-Z means "A to Z"
+\\ STMTS            :=  <STMT>; <STMTS>? | { <STMTS>? }
+\\ STMT             :=  print <EXPR> | read <EXPR> | let ID = <EXPR> | <EXPR>
+\\ EXPR             :=  ( <EXPR> ) | <OPRND> <BIN_OPRT> <OPRND> | <UNARY_OPRT><OPRND> | <OPRND>
+\\ BIN_OPRT         := + | - | * | / | < | > | <= | >= | & | "|"
+\\ UNARY_OPRT       := !
+\\ OPRND            := <STRING> | <FLOAT> | <INTEGER> | <ARRAY> | <OBJECT>
+\\ STRING           := "<STR_CHAR>"
+\\ STR_CHAR         := (!<DOUBLE_QUOTE>)*
+\\ DOUBLE_QUOTE     := "
+\\ INTEGER          := <NON_ZERO_DIGIT><DIGIT>
+\\ NON_ZERO_DIGIT   := 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\\ DIGIT            := 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
+\\ FLOAT            := (<DIGIT> | <NON_ZERO_DIGIT>+).<DIGIT>+
+\\ ARRAY            := [ <EXPR>* ]
+\\ OBJECT           := { <OBJECT_PROPS>* }
+\\ OBJECT_PROPS     := <OBJECT_PROP>, <OBJECT_PROPS>?
+\\ OBJECT_PROP      := <ID> : <EXPR>
+\\ ID               := <ID_START><ALPHA_NUM>*
+\\ ID_START         := $ | _ | <ALPHA>
+\\ ALPHA            := a-z | A-Z
+\\ ALPHA_NUM        := a-z | A-Z | DIGIT
+\\ IF_STMT          := if ( <EXPR> ) <STMT> (<ELSE_IF_STMT>* | ELSE_STMT)?
+
+
+

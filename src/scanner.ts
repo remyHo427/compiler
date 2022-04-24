@@ -174,99 +174,99 @@ const scan = (str: string) => {
 
         switch (c) {
             case 'a':
-                check("as", TOKEN_TYPE.AS);
-                check("async", TOKEN_TYPE.ASYNC);
-                check("await", TOKEN_TYPE.AWAIT);
+                check_keyword("as", TOKEN_TYPE.AS);
+                check_keyword("async", TOKEN_TYPE.ASYNC);
+                check_keyword("await", TOKEN_TYPE.AWAIT);
                 identifier();
                 break;
             case 'b':
-                check("break", TOKEN_TYPE.BREAK);
+                check_keyword("break", TOKEN_TYPE.BREAK);
                 identifier();
                 break;
             case 'c':
-                check("case", TOKEN_TYPE.CASE);
-                check("catch", TOKEN_TYPE.CATCH);
-                check("class", TOKEN_TYPE.CLASS);
-                check("const", TOKEN_TYPE.CONST);
-                check("continue", TOKEN_TYPE.CONTINUE);
+                check_keyword("case", TOKEN_TYPE.CASE);
+                check_keyword("catch", TOKEN_TYPE.CATCH);
+                check_keyword("class", TOKEN_TYPE.CLASS);
+                check_keyword("const", TOKEN_TYPE.CONST);
+                check_keyword("continue", TOKEN_TYPE.CONTINUE);
                 identifier();
                 break;
             case 'd':
-                check("do", TOKEN_TYPE.DO);
-                check("delete", TOKEN_TYPE.DELETE);
-                check("default", TOKEN_TYPE.DEFAULT);
-                check("debugger", TOKEN_TYPE.DEBUGGER);
+                check_keyword("do", TOKEN_TYPE.DO);
+                check_keyword("delete", TOKEN_TYPE.DELETE);
+                check_keyword("default", TOKEN_TYPE.DEFAULT);
+                check_keyword("debugger", TOKEN_TYPE.DEBUGGER);
                 identifier();
                 break;
             case 'e':
-                check("else", TOKEN_TYPE.ELSE);
-                check("enum", TOKEN_TYPE.ENUM);
-                check("export", TOKEN_TYPE.EXPORT);
-                check("extends", TOKEN_TYPE.EXTENDS);
+                check_keyword("else", TOKEN_TYPE.ELSE);
+                check_keyword("enum", TOKEN_TYPE.ENUM);
+                check_keyword("export", TOKEN_TYPE.EXPORT);
+                check_keyword("extends", TOKEN_TYPE.EXTENDS);
                 identifier();
                 break;
             case 'f':
-                check("for", TOKEN_TYPE.FOR);
-                check("from", TOKEN_TYPE.FROM);
-                check("finally", TOKEN_TYPE.FINALLY);
-                check("function", TOKEN_TYPE.FUNCTION);
+                check_keyword("for", TOKEN_TYPE.FOR);
+                check_keyword("from", TOKEN_TYPE.FROM);
+                check_keyword("finally", TOKEN_TYPE.FINALLY);
+                check_keyword("function", TOKEN_TYPE.FUNCTION);
                 identifier();
                 break;
             case 'g':
-                check("get", TOKEN_TYPE.GET);
+                check_keyword("get", TOKEN_TYPE.GET);
                 identifier();
                 break;
             case 'i':
-                check("if", TOKEN_TYPE.IF);
-                check("in", TOKEN_TYPE.IN);
-                check("import", TOKEN_TYPE.IMPORT);
-                check("instanceof", TOKEN_TYPE.INSTANCEOF);
+                check_keyword("if", TOKEN_TYPE.IF);
+                check_keyword("in", TOKEN_TYPE.IN);
+                check_keyword("import", TOKEN_TYPE.IMPORT);
+                check_keyword("instanceof", TOKEN_TYPE.INSTANCEOF);
                 identifier();
                 break;
             case 'l':
-                check("let", TOKEN_TYPE.LET);
+                check_keyword("let", TOKEN_TYPE.LET);
                 identifier();
                 break;
             case 'n':
-                check("new", TOKEN_TYPE.NEW);
-                check("null", TOKEN_TYPE.NULL);
+                check_keyword("new", TOKEN_TYPE.NEW);
+                check_keyword("null", TOKEN_TYPE.NULL);
                 identifier();
                 break;
             case 'o':
-                check("of", TOKEN_TYPE.OF);
+                check_keyword("of", TOKEN_TYPE.OF);
                 identifier();
                 break;
             case 'r':
-                check("return", TOKEN_TYPE.RETURN);
+                check_keyword("return", TOKEN_TYPE.RETURN);
                 identifier();
                 break;
             case 's':
-                check("set", TOKEN_TYPE.SET);
-                check("super", TOKEN_TYPE.NULL);
-                check("switch", TOKEN_TYPE.SWITCH);
+                check_keyword("set", TOKEN_TYPE.SET);
+                check_keyword("super", TOKEN_TYPE.NULL);
+                check_keyword("switch", TOKEN_TYPE.SWITCH);
                 identifier();
                 break;
             case 't':
-                check("try", TOKEN_TYPE.TRY);
-                check("true", TOKEN_TYPE.TRUE);
-                check("this", TOKEN_TYPE.THIS);
-                check("throw", TOKEN_TYPE.THROW);
-                check("target", TOKEN_TYPE.TARGET);
-                check("typeof", TOKEN_TYPE.TYPEOF);
+                check_keyword("try", TOKEN_TYPE.TRY);
+                check_keyword("true", TOKEN_TYPE.TRUE);
+                check_keyword("this", TOKEN_TYPE.THIS);
+                check_keyword("throw", TOKEN_TYPE.THROW);
+                check_keyword("target", TOKEN_TYPE.TARGET);
+                check_keyword("typeof", TOKEN_TYPE.TYPEOF);
                 identifier();
                 break;
             case 'v':
-                check("var", TOKEN_TYPE.VAR);
-                check("void", TOKEN_TYPE.VOID);
+                check_keyword("var", TOKEN_TYPE.VAR);
+                check_keyword("void", TOKEN_TYPE.VOID);
                 identifier();
                 break;
             case 'w':
-                check("with", TOKEN_TYPE.WITH);
-                check("while", TOKEN_TYPE.WHILE);
+                check_keyword("with", TOKEN_TYPE.WITH);
+                check_keyword("while", TOKEN_TYPE.WHILE);
                 identifier();
                 break;
             case 'y':
-                check("yield", TOKEN_TYPE.YIELD);
+                check_keyword("yield", TOKEN_TYPE.YIELD);
                 identifier();
                 break;
             case '_':
@@ -302,14 +302,35 @@ const check = (comp_str: string, type: TOKEN_TYPE) => {
     let k = 0;
     let j = char_index;
     let len = comp_str.length;
+    let c: string;
 
-    // broken, examples like "exports" should be identifiers, not keywords
-    while (comp_str[k] == prg[j]) {
+    while ((c = prg[j]) && comp_str[k] == prg[j]) {
         k++;
         j++;
     }
 
     if (k == len) {
+        make_token(type);
+        advance_by(k);
+    }
+}
+
+const check_keyword = (comp_str: string, type: TOKEN_TYPE) => {
+    let k = 0;
+    let j = char_index;
+    let c: string;
+
+    while (isalpha(c = prg[j])) {
+        j++;
+        if (c == comp_str[k]) {
+            k++;
+            continue;
+        } else {
+            break;
+        }
+    }
+
+    if (prg[j - k] == comp_str[0]) {
         make_token(type);
         advance_by(k);
     }

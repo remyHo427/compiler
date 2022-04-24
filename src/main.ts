@@ -1,4 +1,4 @@
-import fs, { unwatchFile } from "fs";
+import fs from "fs";
 import scan from "./scanner";
 
 fs.readFile("./test/test.js", "utf-8", (err, data) => {
